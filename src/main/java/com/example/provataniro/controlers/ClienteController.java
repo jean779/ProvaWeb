@@ -38,6 +38,7 @@ public class ClienteController {
 
         return "redirect:/home";
     }
+
     @RequestMapping(value = "/cliente", method = RequestMethod.GET)
     public ModelAndView homePage(Comidajap comida, Model model, HttpServletResponse response) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
@@ -46,45 +47,46 @@ public class ClienteController {
         cookie.setMaxAge(60 * 60 * 24);
 
         response.addCookie(cookie);
-        
+
         List<Comidajap> comidasAtivas = this.cService.findAllActiveComidajapList();
         model.addAttribute("comidasAtivas", comidasAtivas);
         ModelAndView modelAndView = new ModelAndView("cliente");
         modelAndView.addObject("comida", comida);
         return modelAndView;
     }
-   @RequestMapping("/adicionarcarrinho")
-   public String adicionarCarrinho(@RequestParam("id") Long id, final HttpServletRequest request) {
-       System.out.println("ta chegando");
-       Comidajap comida = cService.getById(id);
-       System.out.println(comida.getNome());
-       if (request.getSession().getAttribute("carrinho") == null) {
-           ArrayList carrinho = new ArrayList();
-           carrinho.add(comida);
-           request.getSession().setAttribute("carrinho", carrinho);
-       } else {
-           ArrayList carrinho = (ArrayList) request.getSession().getAttribute("carrinho");
-           carrinho.add(comida);
-           request.getSession().setAttribute("carrinho", carrinho);
-       }
-       return "redirect:/cliente";
-   }
+
+    @RequestMapping("/adicionarcarrinho")
+    public String adicionarCarrinho(@RequestParam("id") Long id, final HttpServletRequest request) {
+        System.out.println("ta chegando");
+        Comidajap comida = cService.getById(id);
+        System.out.println(comida.getNome());
+        if (request.getSession().getAttribute("carrinho") == null) {
+            ArrayList carrinho = new ArrayList();
+            carrinho.add(comida);
+            request.getSession().setAttribute("carrinho", carrinho);
+        } else {
+            ArrayList carrinho = (ArrayList) request.getSession().getAttribute("carrinho");
+            carrinho.add(comida);
+            request.getSession().setAttribute("carrinho", carrinho);
+        }
+        return "redirect:/cliente";
+    }
 
     @RequestMapping("/vercarrinho")
     public ModelAndView listarItensdoCarrinho(HttpServletRequest request, Comidajap cjap) {
         ModelAndView carrinhoVazio = new ModelAndView();
         if (request.getSession().getAttribute("carrinho") == null) {
-                carrinhoVazio.setViewName("carrinhoVazio");
-                return carrinhoVazio;
-            }
+            carrinhoVazio.setViewName("carrinhoVazio");
+            return carrinhoVazio;
+        }
         ArrayList verCarrinho = (ArrayList) request.getSession().getAttribute("carrinho");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("carrinho", verCarrinho);
         modelAndView.addObject("comida", cjap);
         modelAndView.setViewName("/verCarrinho");
 
-            return modelAndView;
-        }
+        return modelAndView;
+    }
    /* @RequestMapping(value = "/verCarrinho", method = RequestMethod.GET)
     public String yourCart(HttpServletRequest request) {
         HttpSession session = request.getSession();

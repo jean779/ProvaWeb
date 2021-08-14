@@ -26,7 +26,7 @@ public class AdmController {
     }
 
     @Autowired
-    public void setStorageService(StorageService storageService){
+    public void setStorageService(StorageService storageService) {
         this.sService = storageService;
     }
 
@@ -48,12 +48,12 @@ public class AdmController {
     }
 
     @RequestMapping(value = "/salvar", method = RequestMethod.POST)
-    public String saveBook(@ModelAttribute("pedido") @Valid Comidajap pedido, Errors errors, @RequestParam ("file") MultipartFile file, RedirectAttributes redirectAtt) {
-        if(errors.hasErrors()) {
-            redirectAtt.addAttribute("redirectMessage","Erro ao enviar comida");
+    public String saveBook(@ModelAttribute("pedido") @Valid Comidajap pedido, Errors errors, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAtt) {
+        if (errors.hasErrors()) {
+            redirectAtt.addAttribute("redirectMessage", "Erro ao enviar comida");
             return "cadastro";
-        }else {
-            if(file.isEmpty()) {
+        } else {
+            if (file.isEmpty()) {
                 String currentFileName = this.cservice.getById(pedido.getId()).getImgUri();
                 pedido.setImgUri(currentFileName);
             } else {
@@ -62,13 +62,13 @@ public class AdmController {
                 this.sService.salvar(file, hashCode);
             }
             this.cservice.save(pedido);
-            redirectAtt.addAttribute("redirectMessage","Comida registrada");
+            redirectAtt.addAttribute("redirectMessage", "Comida registrada");
         }
         return "redirect:/admin";
     }
 
     @RequestMapping(value = "/deletarcomida/{id}", method = RequestMethod.GET)
-    public String deletarcomida(RedirectAttributes redirectAtt, @PathVariable (name = "id") Long id) {
+    public String deletarcomida(RedirectAttributes redirectAtt, @PathVariable(name = "id") Long id) {
         cservice.delete(id);
         redirectAtt.addAttribute("redirectMessage", "Comida Deletada");
         return "redirect:/admin";
