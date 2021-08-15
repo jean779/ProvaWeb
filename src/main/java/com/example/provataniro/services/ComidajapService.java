@@ -24,7 +24,7 @@ public class ComidajapService {
 
     public List<Comidajap> findAllActiveComidajapList() { return this.repository.findAllByDeletedIsNull(); }
 
-    //public List<Comidajap> findAllIncativeBoComidajapList() { return this.repository.findAllByDeletedIsNotNull(); }
+
 
     public void save(Comidajap cjap) {
         this.repository.save(cjap);

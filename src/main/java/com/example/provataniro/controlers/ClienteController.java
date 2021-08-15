@@ -40,19 +40,28 @@ public class ClienteController {
     }
 
     @RequestMapping(value = "/cliente", method = RequestMethod.GET)
-    public ModelAndView homePage(Comidajap comida, Model model, HttpServletResponse response) {
+    public ModelAndView homePage(Comidajap comida, Model model, HttpServletResponse response, HttpServletRequest request) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
         Date date = new Date();
         Cookie cookie = new Cookie("Ultimavisita", dateFormat.format(date));
         cookie.setMaxAge(60 * 60 * 24);
 
         response.addCookie(cookie);
+        ArrayList<Comidajap> carrinho = (ArrayList<Comidajap>) request.getSession().getAttribute("carrinho");
+        Integer itensCarrinho;
+        if (carrinho == null) {
+            itensCarrinho = 0;
+        } else {
+            itensCarrinho = carrinho.size();
+        }
 
         List<Comidajap> comidasAtivas = this.cService.findAllActiveComidajapList();
         model.addAttribute("comidasAtivas", comidasAtivas);
         ModelAndView modelAndView = new ModelAndView("cliente");
         modelAndView.addObject("comida", comida);
+        modelAndView.addObject("itensCarrinho", itensCarrinho);
         return modelAndView;
+
     }
 
     @RequestMapping("/adicionarcarrinho")
