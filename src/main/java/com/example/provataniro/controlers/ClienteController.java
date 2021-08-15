@@ -92,7 +92,7 @@ public class ClienteController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("carrinho", verCarrinho);
         modelAndView.addObject("comida", cjap);
-        modelAndView.setViewName("/verCarrinho");
+        modelAndView.setViewName("verCarrinho");
 
         return modelAndView;
     }
