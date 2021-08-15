@@ -85,14 +85,14 @@ public class ClienteController {
     public ModelAndView listarItensdoCarrinho(HttpServletRequest request, Comidajap cjap) {
         ModelAndView carrinhoVazio = new ModelAndView();
         if (request.getSession().getAttribute("carrinho") == null) {
-            carrinhoVazio.setViewName("carrinhoVazio");
+            carrinhoVazio.setViewName("/carrinhoVazio");
             return carrinhoVazio;
         }
         ArrayList verCarrinho = (ArrayList) request.getSession().getAttribute("carrinho");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("carrinho", verCarrinho);
         modelAndView.addObject("comida", cjap);
-        modelAndView.setViewName("verCarrinho");
+        modelAndView.setViewName("/verCarrinho");
 
         return modelAndView;
     }
